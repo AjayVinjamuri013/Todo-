@@ -12,7 +12,7 @@
 // },(error)=>{
 //     console.log(error);
 // });
-
+var {ObjectID} = require('mongodb');
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -42,6 +42,25 @@ app.post('/todos', (req, res) => {
       res.status(400).send(e);
     });
   });
+
+  app.get('/todos/:id',(req,res)=>{
+    var id = req.params.id;
+    if(!ObjectID.isValid(id))
+    {
+     return res.status(404).send();
+    }
+    Todo.findById(id).then((x)=>{
+  if(!x)
+  {
+    return res.status(404).send();
+  }
+  
+  res.send({x});
+}).catch((e)=>{
+  res.status(400).send();
+
+  });
+});
 
 app.listen(3000, () => {
   console.log('Started on port 3000');

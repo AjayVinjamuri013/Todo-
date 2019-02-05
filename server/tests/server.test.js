@@ -3,14 +3,15 @@ const expect = require('expect');
 const request = require('supertest');
 
 const {app}  = require('./../server');
-const {todo} = require('./../models/todo');
-
+const todo = require('./../models/todo').Todo;
+const beforeEach = require('mocha').beforeEach;
 
 const todos = [{
   text :'first test todo'
 },{
   text : 'secondtest toodo'
 }];
+
 beforeEach((done)=>{
   todo.remove({}).then(()=>{
     return todo.insertMany(todos);
